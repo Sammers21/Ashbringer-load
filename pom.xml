@@ -11,6 +11,8 @@
 
     <modules>
         <module>ashbringer-core</module>
+        <module>ashbringer-benchmark</module>
+        <module>ashbringer-cli</module>
     </modules>
 
     <dependencies>
@@ -19,7 +21,13 @@
             <artifactId>async-http-client</artifactId>
             <version>2.0.32</version>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>3.4.2</version>
+        </dependency>
     </dependencies>
+
     <build>
         <pluginManagement>
             <plugins>
