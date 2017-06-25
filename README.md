@@ -19,3 +19,6 @@ Default values for:
 * max_sessions  - 2
 * nThreads      - 1
 * path          - "" or nothing
+
+# Reached maximum
+![image](https://user-images.githubusercontent.com/16746106/27520316-0068d180-5a11-11e7-9401-4a41bd71371d.png)
