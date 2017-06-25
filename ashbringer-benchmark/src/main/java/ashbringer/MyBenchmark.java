@@ -31,7 +31,6 @@
 
 package ashbringer;
 
-import io.vertx.core.Vertx;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -45,19 +44,9 @@ import java.util.concurrent.TimeUnit;
 @Fork(1)
 public class MyBenchmark {
 
-    Vertx vertx = Vertx.vertx();
-
     @Benchmark
     public void testMethod() {
-        HttpScheduler httpScheduler = HttpScheduler.create(new SchedulerOptions()
-                .setThreadCount(4)
-                .setMaxSessions(10_000)
-                .setVertx(vertx)
-        );
 
-        long start = httpScheduler.start(100_000);
-        System.out.println(start);
-        System.out.println(httpScheduler.report());
     }
 
 }

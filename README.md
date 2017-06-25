@@ -10,5 +10,12 @@ You should use cli in case you want to test your http server.
 Usage
 ```
 $ mvn clean install
-$ java -jar ashbringer-cli/target/ashbringer-cli-1.0-SNAPSHOT.jar <server_ip> <port>
+$ java -jar ashbringer-cli/target/ashbringer-cli-1.0-SNAPSHOT.jar <time> <host> <port> <max_sessions> <nThreads> <path>
 ```
+Default values for:
+* time          - 0 mean infinite time
+* host          - 0.0.0.0 or localhost
+* port          - 80
+* max_sessions  - 2
+* nThreads      - 1
+* path          - "" or nothing
