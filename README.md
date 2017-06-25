@@ -24,6 +24,7 @@ Default values for:
 *hardware*: 2xCPU,7 gb RAM
 
 *os*: Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-81-generic x86_64)
+
 *java*: openJDK 1.8.0_131 x64 server mode
 
 ![image](https://user-images.githubusercontent.com/16746106/27520468-fb7d1678-5a14-11e7-85eb-6ff9c1e27362.png)
