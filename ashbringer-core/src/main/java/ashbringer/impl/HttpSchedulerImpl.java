@@ -138,6 +138,7 @@ public class HttpSchedulerImpl implements HttpScheduler {
                 .append("RPS ").append(reqTotal.get() / timespent).append("\n");
 
         stringBuilder.append(options);
+        stringBuilder.append("\tcurrent sessions").append(currentSessions.get()).append("\n");
 
         return stringBuilder.toString();
     }
