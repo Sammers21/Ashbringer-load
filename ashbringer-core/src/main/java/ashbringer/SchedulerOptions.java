@@ -1,5 +1,7 @@
 package ashbringer;
 
+import io.vertx.core.Vertx;
+
 public class SchedulerOptions {
 
     public String host = "localhost";
@@ -7,6 +9,12 @@ public class SchedulerOptions {
     public int threadCount = 1;
     public int maxSessions = 100;
     public String reportPath = ".";
+    public Vertx vertx = Vertx.vertx();
+
+    public SchedulerOptions setVertx(Vertx vertx) {
+        this.vertx = vertx;
+        return this;
+    }
 
     public SchedulerOptions setHost(String host) {
         this.host = host;
@@ -31,5 +39,14 @@ public class SchedulerOptions {
     public SchedulerOptions setReportPath(String reportPath) {
         this.reportPath = reportPath;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Options: " + "\n" +
+                "\thost='" + host + '\'' + "\n" +
+                "\tport=" + port + "\n" +
+                "\tthreadCount=" + threadCount + "\n" +
+                "\tmaxSessions=" + maxSessions + "\n";
     }
 }
