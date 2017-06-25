@@ -13,7 +13,7 @@ public class Main {
         String host = "0.0.0.0";
         int port = 80;
         int maxSessions = 2;
-        int nThreads = 1;
+        int nThreads = Runtime.getRuntime().availableProcessors();
         String path = "";
         if (args.length >= 1) {
             time = Integer.parseInt(args[0]);
