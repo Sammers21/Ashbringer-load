@@ -76,6 +76,7 @@ public class ShootSession {
 
     void stop() {
         stopFlag = true;
+        nettyShooter.killNettyThreads();
     }
 
     Report report() {

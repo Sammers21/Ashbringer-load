@@ -1,15 +1,20 @@
-package ashbringer.core;
+package ashbringer.core.single;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
+
+public class SingleHttpHandler extends SimpleChannelInboundHandler<HttpObject> {
+
     @Override
     public void channelRead0(ChannelHandlerContext ctx, HttpObject msg) {
-       /* if (msg instanceof HttpResponse) {
+        System.out.println("kek");
+        System.out.println(msg.toString());
+        if (msg instanceof HttpResponse) {
             HttpResponse response = (HttpResponse) msg;
 
             System.err.println("STATUS: " + response.status());
@@ -42,7 +47,7 @@ public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
                 System.err.println("} END OF CONTENT");
                 ctx.close();
             }
-        }*/
+        }
     }
 
     @Override
