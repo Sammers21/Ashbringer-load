@@ -75,7 +75,7 @@ public class ShootSession {
                 lastSecondReqRem.set(lastSecondReq.get());
                 lastSecondReq.set(0);
             }
-        });
+        }).start();
     }
 
     void stop() {
