@@ -22,10 +22,7 @@ public class Main {
 
         if (args.length >= 2) {
             host = args[1];
-            if (host.charAt(0) == 's') {
-                host = host.substring(1, host.length());
-                ssl = true;
-            }
+
         }
         if (args.length >= 3) {
             port = Integer.parseInt(args[2]);
@@ -37,10 +34,14 @@ public class Main {
             nThreads = Integer.parseInt(args[4]);
         }
         if (args.length >= 6) {
-            path = args[5];
+            ssl = args[5].equals("s");
         }
 
-        ShootSession shootSession = new ShootSession(host, port, path, maxSessions, nThreads, ssl);
+        if (args.length >= 7) {
+            path = args[6];
+        }
+
+        ShootSession shootSession = new ShootSession(host, port, path, maxSessions, nThreads);
         shootSession.start();
         if (time == 0) {
             while (true) {
