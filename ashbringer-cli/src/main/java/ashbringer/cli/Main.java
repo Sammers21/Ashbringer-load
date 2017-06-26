@@ -15,12 +15,17 @@ public class Main {
         int maxSessions = 2;
         int nThreads = Runtime.getRuntime().availableProcessors();
         String path = "";
+        boolean ssl = false;
         if (args.length >= 1) {
             time = Integer.parseInt(args[0]);
         }
 
         if (args.length >= 2) {
             host = args[1];
+            if (host.charAt(0) == 's') {
+                host = host.substring(1, host.length());
+                ssl = true;
+            }
         }
         if (args.length >= 3) {
             port = Integer.parseInt(args[2]);
@@ -35,7 +40,7 @@ public class Main {
             path = args[5];
         }
 
-        ShootSession shootSession = new ShootSession(host, port, path, maxSessions, nThreads);
+        ShootSession shootSession = new ShootSession(host, port, path, maxSessions, nThreads, ssl);
         shootSession.start();
         if (time == 0) {
             while (true) {

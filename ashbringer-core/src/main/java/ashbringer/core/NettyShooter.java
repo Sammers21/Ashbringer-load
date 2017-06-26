@@ -9,7 +9,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import io.netty.handler.ssl.*;
 
+import javax.net.ssl.SSLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -19,14 +23,16 @@ public class NettyShooter implements Shooter {
     public final String host;
     public final String path;
     public final int port;
+    public final boolean ssl;
     EventLoopGroup group;
 
-    public NettyShooter(String host, int port, String path, int nThreads) {
+    public NettyShooter(String host, int port, String path, int nThreads, boolean ssl) {
 
         //make uri
         uri = null;
         try {
-            uri = new URI(String.format("http://%s:%d%s", host, port, path));
+            String ssls = ssl ? "s" : "";
+            uri = new URI(String.format("http%s://%s:%d%s", ssls, host, port, path));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -35,15 +41,27 @@ public class NettyShooter implements Shooter {
         this.host = host;
         this.port = port;
         this.path = path;
+        this.ssl = ssl;
         group = new NioEventLoopGroup(nThreads);
     }
 
     public void shoot(ShootComplete shootComplete) {
 
         Bootstrap b = new Bootstrap();
+
+        SslContext sslContext = null;
+        if (ssl) {
+            try {
+                sslContext = SslContextBuilder.forClient()
+                        .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+            } catch (SSLException e) {
+                e.printStackTrace();
+            }
+        }
+
         b.group(group)
                 .channel(NioSocketChannel.class)
-                .handler(new HttpClientInitializer());
+                .handler(new HttpClientInitializer(sslContext));
 
         // Make the connection attempt.
         b.connect(host, port).addListener(

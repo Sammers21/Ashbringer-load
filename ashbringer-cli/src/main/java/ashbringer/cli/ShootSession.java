@@ -33,7 +33,11 @@ public class ShootSession {
     }
 
     public ShootSession(String host, int port, String path, long maxSessions, int nThreads) {
-        nettyShooter = new NettyShooter(host, port, path, nThreads);
+        this(host, port, path, maxSessions, nThreads, false);
+    }
+
+    public ShootSession(String host, int port, String path, long maxSessions, int nThreads, boolean ssl) {
+        nettyShooter = new NettyShooter(host, port, path, nThreads, ssl);
         sessionStartTime = new AtomicLong(System.currentTimeMillis());
         this.maxSessions = maxSessions;
         this.nThreads = nThreads;
