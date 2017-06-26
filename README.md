@@ -29,4 +29,4 @@ Default values for:
 
 *java*: openJDK 1.8.0_131 x64 server mode
 
-![image](https://user-images.githubusercontent.com/16746106/27520468-fb7d1678-5a14-11e7-85eb-6ff9c1e27362.png)
+![image](https://user-images.githubusercontent.com/16746106/27547155-b6cf157e-5a9d-11e7-905c-3bebab56f636.png)
