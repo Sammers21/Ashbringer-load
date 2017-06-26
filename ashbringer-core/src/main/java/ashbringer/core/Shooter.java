@@ -21,7 +21,7 @@ public interface Shooter {
      * @param shootSessionComplete callback called when we shoot target {@code times} times and we will not shoot
      *                             target anymore
      */
-    void startShootConnection(int times,
+    void startShootConnection(long times,
                               ShootComplete oneShootComplete,
                               ShootComplete shootSessionComplete);
 }

@@ -49,10 +49,8 @@ public class NettyShooter implements Shooter {
     public void shoot(ShootComplete shootComplete) {
 
         Bootstrap b = new Bootstrap();
-        b.group(group)
-                .channel(NioSocketChannel.class)
+        b.group(group)               .channel(NioSocketChannel.class)
                 .handler(new SingleHttpInitializer());
-
         // Make the connection attempt.
         b.connect(host, port).addListener(
                 (ChannelFutureListener) channelFuture -> {
@@ -63,10 +61,10 @@ public class NettyShooter implements Shooter {
     @Override
     public void startShootConnection(long times, ShootComplete oneShootComplete, ShootComplete shootSessionComplete) {
         Bootstrap b = new Bootstrap();
-        ChannelFuture ch2 = null;
-        SessionHttpInitializer sessionHttpInitializer = new SessionHttpInitializer(times, (status, ch) -> {
+        SessionHttpInitializer sessionHttpInitializer = new SessionHttpInitializer(times, (status, remain, ch) -> {
             System.out.println("status " + status);
-            if (status == 200)
+
+            if (status == 200 && remain > 0)
                 sendHttp(ch);
         });
 
@@ -77,48 +75,9 @@ public class NettyShooter implements Shooter {
         // Make the connection attempt.
         b.connect(host, port).addListener(
                 (ChannelFutureListener) channelFuture -> {
-                    ch2 = channelFuture;
-                    //   sendSeveralHttpAndClose(times, channelFuture, oneShootComplete, shootSessionComplete);
+                    sessionHttpInitializer.sessionHttpHandler.channel = channelFuture.channel();
+                    sendHttp(channelFuture.channel());
                 });
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        NettyShooter nettyShooter = new NettyShooter("docs.oasis-open.org", 80, "", 1);
-        nettyShooter.startShootConnection(3,
-                () -> {
-                    System.out.println("complete one");
-                },
-                () -> {
-                    System.out.println("complete all");
-                });
-        /*nettyShooter.shoot(() -> {
-            System.out.println("kek21");
-        });*/
-        Thread.sleep(10000);
-
-        nettyShooter.killNettyThreads();
-
-    }
-
-    private void sendSeveralHttpAndClose(int times,
-                                         ChannelFuture channelFuture,
-                                         ShootComplete oneShootComplete,
-                                         ShootComplete shootSessionComplete
-    ) {
-
-        if (times == 0) {
-            close(channelFuture, shootSessionComplete);
-            return;
-        }
-
-        // Send the HTTP request.
-        Channel channel = channelFuture.channel();
-        HttpRequest request = get();
-        channel.writeAndFlush(request).addListener((ChannelFutureListener) l -> {
-            oneShootComplete.shootComplete();
-            sendSeveralHttpAndClose(times - 1, l, oneShootComplete, shootSessionComplete);
-        });
-
     }
 
     private void sendHttpRequestAndClose(ChannelFuture channelFuture, ShootComplete shootComplete) {
@@ -133,6 +92,7 @@ public class NettyShooter implements Shooter {
     }
 
     private void sendHttp(Channel channel) {
+        System.out.println("send http");
         HttpRequest request = get();
         channel.writeAndFlush(request);
     }
@@ -145,7 +105,7 @@ public class NettyShooter implements Shooter {
     }
 
     HttpRequest get() {
-        HttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, uri.getRawPath());
+        HttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.HEAD, uri.getRawPath());
 
         request.headers().set(HttpHeaderNames.HOST, host);
         request.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
@@ -155,6 +115,24 @@ public class NettyShooter implements Shooter {
 
     public void killNettyThreads() {
         group.shutdownGracefully();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        NettyShooter nettyShooter = new NettyShooter("0.0.0.0", 8080, "", 1);
+        nettyShooter.startShootConnection(3,
+                () -> {
+                    System.out.println("complete one");
+                },
+                () -> {
+                    System.out.println("complete all");
+                });
+        /*nettyShooter.shoot(() -> {
+            System.out.println("kek21");
+        });*/
+        Thread.sleep(10000);
+
+        nettyShooter.killNettyThreads();
+
     }
 }
 
