@@ -10,7 +10,8 @@ You should use cli in case you want to test your http server.
 Usage
 ```
 $ mvn clean install
-$ java -jar ashbringer-cli/target/ashbringer-cli-1.0-SNAPSHOT.jar <time> <host> <port> <max_sessions> <nThreads> <path>
+$ java -jar ashbringer-cli/target/ashbringer-cli-1.0-SNAPSHOT.jar \
+  <time> <host> <port> <max_sessions> <nThreads> <schme> <path>
 ```
 Default values for:
 * time          - 0 mean infinite time
@@ -18,6 +19,7 @@ Default values for:
 * port          - 80
 * max_sessions  - 2
 * nThreads      - 1
+* scheme        - http (it also support https)
 * path          - "" or nothing
 
 # Reached maximum

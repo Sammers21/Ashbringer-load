@@ -34,7 +34,7 @@ public class Main {
             nThreads = Integer.parseInt(args[4]);
         }
         if (args.length >= 6) {
-            ssl = args[5].equals("s");
+            ssl = args[5].equals("https");
         }
 
         if (args.length >= 7) {
