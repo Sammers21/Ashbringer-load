@@ -41,7 +41,7 @@ public class Main {
             path = args[6];
         }
 
-        ShootSession shootSession = new ShootSession(host, port, path, maxSessions, nThreads);
+        ShootSession shootSession = new ShootSession(host, port, path, maxSessions, nThreads,ssl);
         shootSession.start();
         if (time == 0) {
             while (true) {
