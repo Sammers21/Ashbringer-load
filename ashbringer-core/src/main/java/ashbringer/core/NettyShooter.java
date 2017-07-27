@@ -21,6 +21,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.*;
@@ -57,7 +58,13 @@ public class NettyShooter implements Shooter {
         this.port = port;
         this.path = path;
         this.ssl = ssl;
-        group = new NioEventLoopGroup(nThreads);
+        if (System.getProperty("os.name").toLowerCase().contains("linux")) {
+            System.out.println("Use epoll");
+            group = new EpollEventLoopGroup(nThreads);
+        } else {
+            System.out.println("Use nio");
+            group = new NioEventLoopGroup(nThreads);
+        }
     }
 
     public void shoot(ShootComplete shootComplete) {
